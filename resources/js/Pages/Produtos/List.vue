@@ -3,14 +3,14 @@
 
         <template #content>
             <div class="flex justify-between mb-4">
-                <h1 class="my-2 font-semibold">Projetos</h1>
+                <h1 class="my-2 font-semibold">Produtos</h1>
 
                 <search-filter v-model="form.search" class="w-2/5 max-w-md" @reset="reset">
 
                 </search-filter>
             </div>
 
-            <div class="space-y-6" v-if="projetos.data.length > 0">
+            <div class="space-y-6" v-if="produtos.data.length > 0">
                 <div class="flex" >
                     <div class="w-full flex flex-col items-start ">
                         <table class="table-fixed text-left w-full">
@@ -32,7 +32,11 @@
                                 </th>
                                 <th class="w-2/6 border border-light-blue-500 px-4 py-2 text-light-blue-600">
                                     <div class="flex justify-between">
-                                        Instituição
+                                        Ordem
+                                        <div class="flex flex-col ">
+                                            <div @click="order('nameC')"  class=" cursor-pointer hover:text-sistema-primary h-2"><i class="fas fa-sort-up" v-tooltip="'Ordem crescente'"></i></div>
+                                            <div @click="order('nameD')"  class="cursor-pointer hover:text-sistema-primary h-2"><i class="fas fa-sort-down " v-tooltip="'Ordem decrescente'"></i></div>
+                                        </div>
                                     </div>
                                 </th>
                                 <th class="w-1/6 border border-light-blue-500 px-4 py-2 text-light-blue-600 text-center">Ações</th>
@@ -40,11 +44,11 @@
                             </thead>
                             <tbody>
 
-                            <tr v-for="(projeto, index) in projetos.data" class="hover:bg-gray-100" :key="projeto.id" >
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium"><img class="w-24" :src="projeto.capa" /></td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ projeto.titulo }}</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ projeto.instituicao }}</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium text-center"><item :projeto="projeto"></item></td>
+                            <tr v-for="(produto, index) in produtos.data" class="hover:bg-gray-100" :key="produto.id" >
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium"><img class="w-24" :src="produto.capa" /></td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ produto.titulo }}</td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ produto.ordem }}</td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium text-center"><item :produto="produto"></item></td>
                             </tr>
                             </tbody>
                         </table>
@@ -53,7 +57,7 @@
                 </div>
 
                 <div class="flex justify-center">
-                    <pagination :links="projetos.links"></pagination>
+                    <pagination :links="produtos.links"></pagination>
                 </div>
             </div>
         </template>
@@ -83,7 +87,7 @@ export default {
         Item,
     },
     props: {
-        'projetos': Object,
+        'produtos': Object,
         'filters': Object
     },
     data() {
@@ -98,7 +102,7 @@ export default {
         form: {
             handler: _.debounce(function() {
                 let query = pickBy(this.form);
-                let route = this.route('projetos', Object.keys(query).length ? query : { remember: 'forget' });
+                let route = this.route('produtos', Object.keys(query).length ? query : { remember: 'forget' });
                 this.$inertia.get(route, {}, { preserveScroll: true, preserveState: true })
             }, 150),
             deep: true,

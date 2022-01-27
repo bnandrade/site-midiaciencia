@@ -3,8 +3,8 @@
 
         <button
             class="cursor-pointer text-sm text-gray-400 focus:outline-none mx-2"
-            @click="updating = true" v-tooltip="'Editar projeto'"
-            v-if="$page.props.auth.user.can['projeto-editar'] || $page.props.auth.user.role['Super.Admin']">
+            @click="updating = true" v-tooltip="'Editar produto'"
+            v-if="$page.props.auth.user.can['produto-editar'] || $page.props.auth.user.role['Super.Admin']">
             <font-awesome-icon :icon="[ 'far', 'edit' ]" />
         </button>
         <button
@@ -16,8 +16,8 @@
 
         <button
             class="cursor-pointer  text-sm text-red-500 focus:outline-none mx-2"
-            @click="destroying = true" v-tooltip="'Excluir projeto'"
-            v-if="$page.props.auth.user.can['projeto-deletar'] || $page.props.auth.user.role['Super.Admin']">
+            @click="destroying = true" v-tooltip="'Excluir produto'"
+            v-if="$page.props.auth.user.can['produto-deletar'] || $page.props.auth.user.role['Super.Admin']">
             <font-awesome-icon :icon="[ 'far', 'trash-alt' ]" />
         </button>
         <button
@@ -29,7 +29,7 @@
 
         <jet-dialog-modal :show="updating" @close="updating = false">
             <template #title>
-                Atualizar Projeto
+                Atualizar produto
             </template>
 
             <template #content>
@@ -49,52 +49,57 @@
                 </div>
 
                 <div class="">
-                    <jet-label for="titulo" value="Título do projeto" />
+                    <jet-label for="titulo" value="Título" />
                     <jet-input id="titulo" type="text" class="mt-1 block w-full" v-model="updateForm.titulo"  />
                     <jet-input-error :message="updateForm.errors.titulo" class="mt-2" />
                 </div>
 
-                <div class=" mt-4">
-                    <jet-label for="instituicao" value="Instituição" />
-                    <jet-input id="instituicao" type="text" class="mt-1 block w-full" v-model="updateForm.instituicao"  />
-                    <jet-input-error :message="updateForm.errors.instituicao" class="mt-2" />
-                </div>
-
-                <div class="mt-4">
-                    <jet-label for="cidade" value="Cidade" />
-                    <jet-input id="cidade" type="text" class="mt-1 block w-full" v-model="updateForm.cidade"  />
-                    <jet-input-error :message="updateForm.errors.cidade" class="mt-2" />
-                </div>
-
-                <div class="mt-4">
-                    <jet-label for="coordenador" value="Coordenador" />
-                    <jet-input id="coordenador" type="text" class="mt-1 block w-full" v-model="updateForm.coordenador"  />
-                    <jet-input-error :message="updateForm.errors.coordenador" class="mt-2" />
-                </div>
-
-                <div class="mt-4">
-                    <jet-label for="bolsistas" value="Bolsistas" />
-                    <jet-input id="bolsistas" type="text" class="mt-1 block w-full" v-model="updateForm.bolsistas"  />
-                    <jet-input-error :message="updateForm.errors.bolsistas" class="mt-2" />
-                </div>
-
-                <div class="mt-4">
+                <div class="">
                     <jet-label for="resumo" value="Resumo" />
                     <jet-input id="resumo" type="text" class="mt-1 block w-full" v-model="updateForm.resumo"  />
                     <jet-input-error :message="updateForm.errors.resumo" class="mt-2" />
                 </div>
 
-                <div class="mt-4">
-                    <jet-label for="url_video" value="Url do vídeo" />
-                    <jet-input id="url_video" type="text" class="mt-1 block w-full" v-model="updateForm.url_video"  />
-                    <jet-input-error :message="updateForm.errors.url_video" class="mt-2" />
+                <div class="col-span-6 mb-4 ">
+                    <jet-label for="content" value="Texto" />
+                    <quill-editor
+                        ref="texto"
+                        id="texto"
+                        :value="texto"
+                        :options="editorOption"
+                        v-model:value="updateForm.texto"
+                    />
+                    <jet-input-error :message="updateForm.errors.texto" class="mt-2" />
                 </div>
 
-                <div class="mt-4">
-                    <jet-label for="url_foto" value="Url da foto" />
-                    <jet-input id="url_foto" type="text" class="mt-1 block w-full" v-model="updateForm.url_foto"  />
-                    <jet-input-error :message="updateForm.errors.url_foto" class="mt-2" />
+                <div class="col-span-3 ">
+                    <jet-label for="ordem" value="Ordem de apresentação" />
+                    <select v-model="updateForm.ordem"  class="form-input rounded-md shadow-sm block mt-1 p-3 w-full border focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparent " >
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                    </select>
+                    <jet-input-error :message="updateForm.errors.ordem" class="mt-2" />
                 </div>
+
 
             </template>
 
@@ -112,7 +117,7 @@
 
         <jet-confirmation-modal :show="destroying" @close="destroying = false">
             <template #title>
-                Deletar Projeto
+                Deletar produto
             </template>
 
             <template #content>
@@ -149,10 +154,17 @@ import JetInputError from '@/Jetstream/InputError'
 import JetLabel from '@/Jetstream/Label'
 import JetSecondaryButton from '@/Jetstream/SecondaryButton'
 
+import { quillEditor } from 'vue-quill-editor'
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+
+import dedent from 'dedent'
+
 
 export default {
     props: {
-        'projeto': Object,
+        'produto': Object,
     },
 
     components: {
@@ -165,30 +177,52 @@ export default {
         JetInputError,
         JetLabel,
         JetSecondaryButton,
-        JetSectionBorder
+        JetSectionBorder,
+        quillEditor,
     },
 
     data() {
         return {
             updateForm: this.$inertia.form({
                 capa: '',
-                titulo: this.projeto.titulo,
-                instituicao: this.projeto.instituicao,
-                cidade: this.projeto.cidade,
-                coordenador: this.projeto.coordenador,
-                bolsistas: this.projeto.bolsistas,
-                resumo: this.projeto.resumo,
-                url_video: this.projeto.url_video,
-                url_foto: this.projeto.url_foto,
-                ano: this.projeto.ano,
+                titulo: this.produto.titulo,
+                resumo: this.produto.resumo,
+                texto: this.produto.texto,
+                ordem: this.produto.ordem,
             }),
             capa: '',
-            imagePreview: this.projeto.capa,
+            imagePreview: this.produto.capa,
 
             updating: false,
 
             destroyForm: this.$inertia.form(),
             destroying: false,
+
+
+            editorOption: {
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'header': 1 }, { 'header': 2 }],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'script': 'sub' }, { 'script': 'super' }],
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                        [{ 'direction': 'rtl' }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        [{ 'font': [] }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean'],
+                        ['link',  'video']
+                    ],
+                    syntax: {
+                        highlight: text => hljs.highlightAuto(text).value
+                    }
+                }
+            },
+            texto: dedent``,
 
         }
     },
@@ -200,31 +234,21 @@ export default {
                 _method : 'PUT',
                 capa: this.capa,
                 titulo: this.updateForm.titulo,
-                instituicao: this.updateForm.instituicao,
-                cidade: this.updateForm.cidade,
-                coordenador: this.updateForm.coordenador,
-                bolsistas: this.updateForm.bolsistas,
                 resumo: this.updateForm.resumo,
-                url_video: this.updateForm.url_video,
-                url_foto: this.updateForm.url_foto,
-                ano: this.updateForm.ano,
+                texto: this.updateForm.texto,
+                ordem: this.updateForm.ordem,
             }
 
-            this.$inertia.post(this.route('projeto.update', this.projeto), data, {
-                errorBag: 'projetoUpdate',
+            this.$inertia.post(this.route('produto.update', this.produto), data, {
+                errorBag: 'produtoUpdate',
                 preserveScroll: true,
                 onSuccess: () => {
                     this.updateForm.reset()
                     this.updateForm.capa = ''
                     this.updateForm.titulo = ''
-                    this.updateForm.instituicao = ''
-                    this.updateForm.cidade = ''
-                    this.updateForm.coordenador = ''
-                    this.updateForm.bolsistas = ''
                     this.updateForm.resumo = ''
-                    this.updateForm.url_video = ''
-                    this.updateForm.url_foto = ''
-                    this.updateForm.ano = ''
+                    this.updateForm.texto = ''
+                    this.updateForm.ordem = ''
                     this.formNewVisible = false
                     this.updating = false
 
@@ -241,7 +265,7 @@ export default {
         },
 
         destroy() {
-            this.destroyForm.delete(route('projeto.destroy', this.projeto), {
+            this.destroyForm.delete(route('produto.destroy', this.produto), {
                 errorBag: 'default',
                 preserveScroll: true,
                 onSuccess: () => {

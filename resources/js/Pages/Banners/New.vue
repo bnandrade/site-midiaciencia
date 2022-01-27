@@ -13,13 +13,28 @@
                 </div>
 
             </div>
+            <div class="col-span-6 ">
+                <jet-label for="titulo" value="Titulo" />
+                <jet-input id="titulo" type="text" class="mt-1 block w-full" v-model="form.titulo" autofocus  />
+                <jet-input-error :message="form.errors.titulo" class="mt-2" />
+            </div>
+            <div class="col-span-6 ">
+                <jet-label for="subtitulo" value="Subtitulo" />
+                <jet-input id="subtitulo" type="text" class="mt-1 block w-full" v-model="form.subtitulo" autofocus  />
+                <jet-input-error :message="form.errors.subtitulo" class="mt-2" />
+            </div>
+            <div class="col-span-6 ">
+                <jet-label for="url" value="URL externo (opcional)" />
+                <jet-input id="url" type="text" class="mt-1 block w-full" v-model="form.url" autofocus  />
+                <jet-input-error :message="form.errors.url" class="mt-2" />
+            </div>
 
 
         </template>
 
         <template #actions>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-                Projeto criado
+                Banner criado
             </jet-action-message>
             <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Criar
@@ -57,6 +72,9 @@ export default {
         return {
             form: this.$inertia.form({
                 imagem: '',
+                titulo: '',
+                subtitulo: '',
+                url: '',
             }),
 
             imagePreview: '',

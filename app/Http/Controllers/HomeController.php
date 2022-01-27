@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Numero;
-use App\Models\Projeto;
+use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -26,34 +26,18 @@ class HomeController extends Controller
         return Inertia::render('Home', [
             'filters' => $request->all('search', 'order'),
             'banner' => $bannerImagem,
-            'projetos' => Projeto::orderByName()
+            'produtos' => Produto::orderByName()
                 ->orderBy($field, $order)
                 ->filter($request->only('search', 'order'))
                 ->paginate(20)
                 ->withQueryString()
-                ->through(fn ($projeto) => [
-                    'id' => $projeto->id,
-                    'capa' => Storage::url($projeto->capa),
-                    'titulo' => $projeto->titulo,
-                    'instituicao' => $projeto->instituicao,
-                    'cidade' => $projeto->cidade,
-                    'coordenador' => $projeto->coordenador,
-                    'bolsistas' => $projeto->bolsistas,
-                    'ano' => $projeto->ano,
-                    'resumo' => $projeto->resumo,
-                    'url_video' => $projeto->url_video,
-                    'url_foto' => $projeto->url_foto,
-                ]),
-            'numeros' => Numero::orderByName()
-                ->orderBy($field, $order)
-                ->filter($request->only('search', 'order'))
-                ->paginate(20)
-                ->withQueryString()
-                ->through(fn ($numero) => [
-                    'id' => $numero->id,
-                    'imagem' => Storage::url($numero->imagem),
-                    'titulo' => $numero->titulo,
-                    'valor' => $numero->valor,
+                ->through(fn ($produto) => [
+                    'id' => $produto->id,
+                    'capa' => Storage::url($produto->capa),
+                    'titulo' => $produto->titulo,
+                    'resumo' => $produto->resumo,
+                    'texto' => $produto->texto,
+                    'ordem' => $produto->ordem,
                 ]),
         ]);
     }
@@ -62,7 +46,7 @@ class HomeController extends Controller
     {
 
         return Inertia::render('Detalhes', [
-            'projeto' => Projeto::where('id', $id)->get()->map(function ($projeto) {
+            'projeto' => Produto::where('id', $id)->get()->map(function ($projeto) {
                 return [
                     'id' => $projeto->id,
                     'capa' => Storage::url($projeto->capa),

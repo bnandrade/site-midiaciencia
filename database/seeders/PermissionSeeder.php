@@ -28,14 +28,10 @@ class PermissionSeeder extends Seeder
             'banner-criar',
             'banner-listar',
             'banner-deletar',
-            'numero-criar',
-            'numero-listar',
-            'numero-editar',
-            'numero-deletar',
-            'projeto-criar',
-            'projeto-listar',
-            'projeto-editar',
-            'projeto-deletar',
+            'produto-criar',
+            'produto-listar',
+            'produto-editar',
+            'produto-deletar',
         ];
         foreach ($permissions as $permission) {
             $p = Permission::create(['name' => $permission]);

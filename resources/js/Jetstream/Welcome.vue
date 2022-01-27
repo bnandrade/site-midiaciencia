@@ -8,7 +8,7 @@
             <div class="p-2 md:col-span-6  md:border-b">
                 <div class="flex flex-col  ml-2">
                     <div class="ml-2 text-lg text-gray-600 leading-7 font-semibold">Área administrativa</div>
-                    <div class="ml-2 text-lg text-gray-600 leading-7 font-semibold">Site PICTEC</div>
+                    <div class="ml-2 text-lg text-gray-600 leading-7 font-semibold">Site Midiaciencia</div>
                 </div>
 
 

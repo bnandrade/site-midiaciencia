@@ -4,17 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddImageToProjetosTable extends Migration
+class CreateProdutosTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
+     *
      */
     public function up()
     {
-        Schema::table('projetos', function (Blueprint $table) {
+        Schema::create('produtos', function (Blueprint $table) {
+            $table->id();
             $table->string('capa')->nullable()->default('sem-imagem');
+            $table->string('titulo', '400');
+            $table->string('resumo', '500')->default('sem resumo');
+            $table->text('texto')->default('');
+            $table->integer('ordem')->default('99');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +32,6 @@ class AddImageToProjetosTable extends Migration
      */
     public function down()
     {
-        Schema::table('projetos', function (Blueprint $table) {
-            $table->dropColumn('capa');
-        });
+        Schema::dropIfExists('produtos');
     }
 }

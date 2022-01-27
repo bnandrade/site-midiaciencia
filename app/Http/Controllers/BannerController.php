@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BannerStoreRequest;
+use App\Http\Requests\BannerUpdateRequest;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -22,6 +23,9 @@ class BannerController extends Controller
                 ->through(fn ($banner) => [
                     'id' => $banner->id,
                     'imagem' => Storage::url($banner->imagem),
+                    'titulo' => $banner->titulo,
+                    'subtitulo' => $banner->subtitulo,
+                    'url' => $banner->url,
                 ]),
         ]);
     }
@@ -46,6 +50,34 @@ class BannerController extends Controller
         }
 
         return back(303);
+    }
+
+    public function update(BannerUpdateRequest $request, Banner $banner)
+    {
+        $data = $request->validated();
+        $bannerUp = [];
+
+        if( !empty($data['imagem']) && $data['imagem']){
+            $bannerUp['imagem'] = $request->imagem->store('public/banners');
+        }
+
+        $bannerUp['titulo'] = $data['titulo'];
+        $bannerUp['subtitulo'] = $data['subtitulo'];
+        $bannerUp['url'] = $data['url'];
+
+
+        $bannerUpdate = $banner->update($bannerUp);
+
+
+        if($bannerUpdate){
+            $request->session()->flash('toast.message', 'Banner atualizado com sucesso!');
+            $request->session()->flash('toast.style', 'success');
+        }else{
+            $request->session()->flash('toast.message', 'Ops! Erro ao atualizar banner!');
+            $request->session()->flash('toast.style', 'danger');
+        }
+
+        return Inertia::location(route('banners'));
     }
 
     public function destroy(Request $request, Banner $banner)

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Projeto extends Model
+class Produto extends Model
 {
     use HasFactory;
 
-    protected $table = 'projetos';
+    protected $table = 'produtos';
 
     /**
      * The attributes that are mass assignable.
@@ -18,15 +18,10 @@ class Projeto extends Model
      */
     protected $fillable = [
         'capa',
-        'titulo',
-        'instituicao',
-        'cidade',
-        'coordenador',
         'resumo',
-        'url_video',
-        'url_foto',
-        'ano',
-        'bolsistas'
+        'titulo',
+        'texto',
+        'ordem',
     ];
 
     public function scopeOrderByName($query)
@@ -39,10 +34,7 @@ class Projeto extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('titulo', 'like', '%'.$search.'%')
-                    ->orWhere('instituicao', 'like', '%'.$search.'%')
-                    ->orWhere('coordenador', 'like', '%'.$search.'%')
-                    ->orWhere('cidade', 'like', '%'.$search.'%');
+                $query->where('titulo', 'like', '%'.$search.'%');
             });
         });
     }

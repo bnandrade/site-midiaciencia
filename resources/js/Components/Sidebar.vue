@@ -29,14 +29,9 @@
                     <span class="mx-2 font-medium">Banner</span>
                 </sidebar-nav-link>
 
-                <sidebar-nav-link :href="route('numeros')" :active="route().current('numeros')">
+                <sidebar-nav-link :href="route('produtos')" :active="route().current('produtos')">
                     <font-awesome-icon :icon="[ 'far', 'list-alt' ]" />
-                    <span class="mx-2 font-medium">Números</span>
-                </sidebar-nav-link>
-
-                <sidebar-nav-link :href="route('projetos')" :active="route().current('projetos')">
-                    <font-awesome-icon :icon="[ 'far', 'list-alt' ]" />
-                    <span class="mx-2 font-medium">Projetos</span>
+                    <span class="mx-2 font-medium">Produtos</span>
                 </sidebar-nav-link>
 
                 <hr class="my-6 dark:border-gray-600" />

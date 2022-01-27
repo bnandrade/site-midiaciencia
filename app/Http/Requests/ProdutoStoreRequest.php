@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProjetoUpdateRequest extends FormRequest
+class ProdutoStoreRequest extends FormRequest
 {
 
     /**
@@ -12,7 +12,8 @@ class ProjetoUpdateRequest extends FormRequest
      *
      * @var string
      */
-    protected $errorBag = 'projetoUpdate';
+    protected $errorBag = 'projetoStore';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -31,15 +32,11 @@ class ProjetoUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'capa' => '',
             'titulo' => 'required|string',
-            'instituicao' => 'required|string',
-            'cidade' => 'required|string',
-            'coordenador' => 'required|string',
-            'bolsistas' => 'string',
-            'resumo' => 'required|string',
-            'url_video' => 'string',
-            'url_foto' => 'string',
+            'capa' => '',
+            'resumo' => 'string',
+            'texto' => 'string',
+            'ordem' => 'integer',
         ];
     }
 }
