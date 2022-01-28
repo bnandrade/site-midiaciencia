@@ -20,6 +20,7 @@ class Produto extends Model
         'capa',
         'resumo',
         'titulo',
+        'slug',
         'texto',
         'ordem',
     ];

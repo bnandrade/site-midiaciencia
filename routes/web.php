@@ -35,7 +35,7 @@ use Inertia\Inertia;
 });*/
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/detalhes/{produto}', [HomeController::class, 'detalhes'])->name('detalhes.projeto');
+Route::get('/detalhes/{produto}', [HomeController::class, 'detalhes'])->name('detalhes.produto');
 
 /* ROTAS ADMINISTRATIVAS */
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {

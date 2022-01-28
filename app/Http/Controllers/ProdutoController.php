@@ -8,6 +8,7 @@ use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ProdutoController extends Controller
@@ -44,6 +45,13 @@ class ProdutoController extends Controller
         if( !empty($data['capa']) ){
             $data['capa'] = $request->capa->store('public/produtos');
         }
+
+        $data['slug'] = Str::slug($data['titulo'], '-');
+
+        $verificaSlug = Produto::where('slug', $data['slug'])->count();
+
+        if($verificaSlug > 0)
+            $data['slug'] = Str::slug($data['titulo'].'-'.date('Y-m-d H:i:s'), '-');
 
         $produtoStore = Produto::create($data);
 

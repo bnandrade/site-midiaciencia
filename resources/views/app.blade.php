@@ -32,7 +32,7 @@
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class=" antialiased leading-normal tracking-normal bg-gray-300">
+    <body class=" antialiased leading-normal tracking-normal bg-white">
         @inertia
     </body>
 </html>

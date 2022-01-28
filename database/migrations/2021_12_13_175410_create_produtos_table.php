@@ -17,6 +17,7 @@ class CreateProdutosTable extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
             $table->string('capa')->nullable()->default('sem-imagem');
+            $table->string('slug', '200');
             $table->string('titulo', '400');
             $table->string('resumo', '500')->default('sem resumo');
             $table->text('texto')->default('');

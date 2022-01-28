@@ -15,7 +15,7 @@ module.exports = {
             },
             colors: {
                 sistema: {
-                    primary: '#D41D15',
+                    primary: '#2E2E3D',
                 },
             },
         },

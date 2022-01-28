@@ -19,46 +19,50 @@ class HomeController extends Controller
 
         $banner = Banner::orderBy('id', 'desc')->limit('1')->first();
         $bannerImagem = '';
+        $bannerTitulo = '';
+        $bannerSubtitulo = '';
+        $bannerUrl = '';
         if($banner){
             $bannerImagem = Storage::url($banner->imagem);
+            $bannerTitulo = $banner->titulo;
+            $bannerSubtitulo = $banner->subtitulo;
+            $bannerUrl = $banner->url;
         }
 
         return Inertia::render('Home', [
             'filters' => $request->all('search', 'order'),
-            'banner' => $bannerImagem,
-            'produtos' => Produto::orderByName()
-                ->orderBy($field, $order)
-                ->filter($request->only('search', 'order'))
-                ->paginate(20)
-                ->withQueryString()
-                ->through(fn ($produto) => [
+            'bannerImagem' => $bannerImagem,
+            'bannerTitulo' => $bannerTitulo,
+            'bannerSubtitulo' => $bannerSubtitulo,
+            'bannerUrl' => $bannerUrl,
+            'produtos' => Produto::orderBy('ordem', 'asc')->get()->map(function ($produto) {
+                return [
                     'id' => $produto->id,
                     'capa' => Storage::url($produto->capa),
                     'titulo' => $produto->titulo,
+                    'slug' => $produto->slug,
                     'resumo' => $produto->resumo,
                     'texto' => $produto->texto,
                     'ordem' => $produto->ordem,
-                ]),
+                ];
+
+            }),
         ]);
     }
 
-    public function detalhes($id)
+    public function detalhes($slug)
     {
 
         return Inertia::render('Detalhes', [
-            'projeto' => Produto::where('id', $id)->get()->map(function ($projeto) {
+            'produto' => Produto::where('slug', $slug)->get()->map(function ($produto) {
                 return [
-                    'id' => $projeto->id,
-                    'capa' => Storage::url($projeto->capa),
-                    'titulo' => $projeto->titulo,
-                    'instituicao' => $projeto->instituicao,
-                    'cidade' => $projeto->cidade,
-                    'coordenador' => $projeto->coordenador,
-                    'bolsistas' => $projeto->bolsistas,
-                    'ano' => $projeto->ano,
-                    'resumo' => $projeto->resumo,
-                    'url_video' => $projeto->url_video,
-                    'url_foto' => $projeto->url_foto,
+                    'id' => $produto->id,
+                    'capa' => Storage::url($produto->capa),
+                    'titulo' => $produto->titulo,
+                    'slug' => $produto->slug,
+                    'resumo' => $produto->resumo,
+                    'texto' => $produto->texto,
+                    'ordem' => $produto->ordem,
                 ];
 
             }),

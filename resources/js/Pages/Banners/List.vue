@@ -54,7 +54,7 @@
                                 <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium"><img :src="banner.imagem" /></td>
                                 <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ banner.titulo }}</td>
                                 <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ banner.subtitulo }}</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ banner.url }}</td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium"><a :href="banner.url" target="_blank">clique aqui</a></td>
                                 <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium text-center"><item :banner="banner"></item></td>
                             </tr>
                             </tbody>
