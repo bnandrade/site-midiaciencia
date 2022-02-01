@@ -6,16 +6,16 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <meta name="author" content="Bruno Andrade - Projeto Midia Ciência" />
-        <meta name="description" content="Site PICTEC - Programa de Iniciação Científica e Tecnológica de Mato Grosso do Sul" />
+        <meta name="description" content="Site do Projeto Midiaciencia - Projeto de Popularização da Ciência de Mato Grosso do Sul" />
         <link rel="canonical" href="" />
         <meta property="og:locale" content="pt_BR" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="PICTEC" />
-        <meta property="og:description" content="Site PICTEC - Programa de Iniciação Científica e Tecnológica de Mato Grosso do Sul" />
+        <meta property="og:title" content="MIDIACIENCIA" />
+        <meta property="og:description" content="Site do Projeto Midiaciencia - Projeto de Popularização da Ciência de Mato Grosso do Sul" />
         <meta property="og:url" content="" />
-        <meta property="og:site_name" content="PICTEC" />
+        <meta property="og:site_name" content="MIDIACIENCIA" />
 
-        <meta name="keywords" content="PICTEC, iniciação científica, tecnologia, ciência, MS" />
+        <meta name="keywords" content="MIDIACIENCIA, popularização ciência, tecnologia, ciência, MS" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
