@@ -3,6 +3,13 @@
 
         <button
             class="cursor-pointer text-sm text-gray-400 focus:outline-none mx-2"
+            @click="updatingImage = true" v-tooltip="'Fotos'"
+            v-if="$page.props.auth.user.can['produto-editar'] || $page.props.auth.user.role['Super.Admin']">
+            <font-awesome-icon :icon="[ 'far', 'image' ]" />
+        </button>
+
+        <button
+            class="cursor-pointer text-sm text-gray-400 focus:outline-none mx-2"
             @click="updating = true" v-tooltip="'Editar produto'"
             v-if="$page.props.auth.user.can['produto-editar'] || $page.props.auth.user.role['Super.Admin']">
             <font-awesome-icon :icon="[ 'far', 'edit' ]" />
@@ -26,6 +33,48 @@
             v-tooltip="'Você não tem permissão de Deletar'">
             <font-awesome-icon :icon="[ 'far', 'times-circle' ]" />
         </button>
+
+
+
+
+        <jet-dialog-modal :show="updatingImage" @close="updatingImage = false">
+            <template #title>
+                Imagens do produto
+            </template>
+
+            <template #content>
+
+                <div class="col-span-6 my-4 flex flex-col gap-4 items-center">
+                    <div class="w-full border-b">
+                        <label class="block font-medium text-sm text-gray-700">Imagem de capa:</label>
+                        <input type="file" multiple class="form-input rounded-md shadow-sm block mt-1 p-2 w-full border focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparent " @change="onProdutoImageChange" >
+                        <jet-input-error :message="imageForm.errors.imagem" class="mt-2" />
+                    </div>
+                    <div v-if="produto.fotos" class="w-full mt-4 flex flex-wrap">
+                        <div v-for="(foto, index) in produto.fotos" class="hover:bg-gray-400 p-2 rounded mr-1 w-48" :key="foto.id" >
+                            <img  @click="destroyImage(foto)"  :src="foto.imagem" />
+
+                        </div>
+                    </div>
+                    <div v-else class="w-full mt-4 flex flex-wrap">
+                        Nenhuma foto cadastrada para este produto
+                    </div>
+                </div>
+
+
+            </template>
+
+            <template #footer>
+                <jet-secondary-button @click.native="updatingImage = false">
+                    Cancelar
+                </jet-secondary-button>
+
+                <jet-button class="ml-2" @click.native="storeImage" :class="{ 'opacity-25': imageForm.processing }" :disabled="imageForm.processing">
+                    Salvar
+                </jet-button>
+            </template>
+
+        </jet-dialog-modal>
 
         <jet-dialog-modal :show="updating" @close="updating = false">
             <template #title>
@@ -183,6 +232,10 @@ export default {
 
     data() {
         return {
+            imageForm: this.$inertia.form({
+                produto_id: this.produto.id,
+                imagem: '',
+            }),
             updateForm: this.$inertia.form({
                 capa: '',
                 titulo: this.produto.titulo,
@@ -191,12 +244,16 @@ export default {
                 ordem: this.produto.ordem,
             }),
             capa: '',
+            imagem: '',
             imagePreview: this.produto.capa,
 
             updating: false,
+            updatingImage: false,
 
+            destroyImageForm: this.$inertia.form(),
             destroyForm: this.$inertia.form(),
             destroying: false,
+            destroyingImage: false,
 
 
             editorOption: {
@@ -228,6 +285,17 @@ export default {
     },
 
     methods: {
+        storeImage() {
+            this.imageForm.post(route('produto.store.image'), {
+                errorBag: 'produtoStoreImage',
+                preserveScroll: true,
+                onSuccess: () => {
+                    this.imagem = ''
+                    this.imageForm.reset()
+                }
+            });
+        },
+
         update() {
 
             const data = {
@@ -251,10 +319,18 @@ export default {
                     this.updateForm.ordem = ''
                     this.formNewVisible = false
                     this.updating = false
+                    this.updatingImage = false
 
                 },
             })
 
+        },
+        onProdutoImageChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.imageForm.imagem = files;
+            // this.createImage(files[0]);
         },
         onImageChange(e) {
             var files = e.target.files || e.dataTransfer.files;
@@ -262,6 +338,21 @@ export default {
                 return;
             this.capa = files[0];
             // this.createImage(files[0]);
+        },
+
+        destroyImage(foto) {
+            if(confirm("Deseja realmente excluir esta imagem?")){
+                this.destroyImageForm.delete(route('produto.destroy.image', foto), {
+                    errorBag: 'default',
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        this.destroyingImage = false
+
+                        this.destroyImageForm.reset()
+                    }
+                })
+
+            }
         },
 
         destroy() {

@@ -44,6 +44,7 @@ class HomeController extends Controller
                     'resumo' => $produto->resumo,
                     'texto' => $produto->texto,
                     'ordem' => $produto->ordem,
+                    'fotos' => $produto->fotos,
                 ];
 
             }),
@@ -63,6 +64,7 @@ class HomeController extends Controller
                     'resumo' => $produto->resumo,
                     'texto' => $produto->texto,
                     'ordem' => $produto->ordem,
+                    'fotos' => $produto->fotos,
                 ];
 
             }),

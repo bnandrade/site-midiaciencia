@@ -39,4 +39,9 @@ class Produto extends Model
             });
         });
     }
+
+    public function fotos()
+    {
+        return $this->hasMany(Foto::class,'produto_id');
+    }
 }

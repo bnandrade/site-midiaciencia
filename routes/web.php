@@ -64,6 +64,8 @@ Route::get('/detalhes/{produto}', [HomeController::class, 'detalhes'])->name('de
         Route::post('produtos', [ProdutoController::class, 'store'])->name('produto.store');
         Route::put('produtos/{produto}', [ProdutoController::class, 'update'])->name('produto.update');
         Route::delete('produtos/{produto}', [ProdutoController::class, 'destroy'])->name('produto.destroy');
+        Route::post('produtoFotos', [ProdutoController::class, 'store_image'])->name('produto.store.image');
+        Route::delete('produtoFotos/{produtoImage}', [ProdutoController::class, 'destroyImage'])->name('produto.destroy.image');
 
 
     });

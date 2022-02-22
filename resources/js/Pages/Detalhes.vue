@@ -20,6 +20,14 @@
             <div class="mt-4 " >
                 <p v-html="$page.props.produto[0].texto" class="my-2"></p>
             </div>
+            <div class="mt-4 border-b mb-6" >
+                <div v-if="$page.props.produto[0].fotos" class="w-full mt-4 flex flex-wrap">
+                    <div v-for="(foto, index) in $page.props.produto[0].fotos" class=" p-2 rounded mr-1 w-64" :key="foto.id" >
+                        <img  :src="foto.imagem" />
+
+                    </div>
+                </div>
+            </div>
 
 
         </div>

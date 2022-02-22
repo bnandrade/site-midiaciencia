@@ -10,6 +10,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons'
 import { faMinusSquare } from '@fortawesome/free-regular-svg-icons'
 import { faEdit } from '@fortawesome/free-regular-svg-icons'
+import { faImage } from '@fortawesome/free-regular-svg-icons'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faListAlt } from '@fortawesome/free-regular-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
@@ -22,6 +23,7 @@ library.add(faWhatsapp)
 library.add(faPlusSquare)
 library.add(faMinusSquare)
 library.add(faEdit)
+library.add(faImage)
 library.add(faUser)
 library.add(faListAlt)
 library.add(faTrashAlt)

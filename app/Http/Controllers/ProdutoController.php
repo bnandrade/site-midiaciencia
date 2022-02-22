@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProdutoImageStoreRequest;
 use App\Http\Requests\ProdutoStoreRequest;
 use App\Http\Requests\ProdutoUpdateRequest;
+use App\Models\Foto;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -34,6 +36,7 @@ class ProdutoController extends Controller
                     'resumo' => $produto->resumo,
                     'texto' => $produto->texto,
                     'ordem' => $produto->ordem,
+                    'fotos' => $produto->fotos,
                 ]),
         ]);
     }
@@ -60,6 +63,27 @@ class ProdutoController extends Controller
             $request->session()->flash('toast.style', 'success');
         }else{
             $request->session()->flash('toast.message', 'Ops! Erro ao cadastrar produto!');
+            $request->session()->flash('toast.style', 'danger');
+        }
+
+        return back(303);
+    }
+
+
+    public function store_image(ProdutoImageStoreRequest $request)
+    {
+        $data = $request->validated();
+
+        foreach ($data['imagem'] as $image){
+            $data['imagem'] = Storage::url($image->store('public/produtos/imagens'));
+            $produtoImagemStore = Foto::create($data);
+        }
+
+        if($produtoImagemStore){
+            $request->session()->flash('toast.message', 'Imagem do produto cadastrada com sucesso!');
+            $request->session()->flash('toast.style', 'success');
+        }else{
+            $request->session()->flash('toast.message', 'Ops! Erro ao cadastrar iamgem do produto!');
             $request->session()->flash('toast.style', 'danger');
         }
 
@@ -108,5 +132,19 @@ class ProdutoController extends Controller
         }
 
         return Redirect::route('produtos');
+    }
+    public function destroyImage(Request $request, Foto $produtoImage)
+    {
+        $produtoImageDestroy = $produtoImage->delete();
+
+        if($produtoImageDestroy){
+            $request->session()->flash('toast.message', 'Foto do produto excluído com sucesso!');
+            $request->session()->flash('toast.style', 'success');
+        }else{
+            $request->session()->flash('toast.message', 'Ops! Erro ao excluir foto do produto!');
+            $request->session()->flash('toast.style', 'danger');
+        }
+
+        return back(303);
     }
 }
