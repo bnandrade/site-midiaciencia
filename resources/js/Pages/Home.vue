@@ -26,6 +26,7 @@
                             <!-- <img :src="produto.url_foto">-->
                             <div class="my-4 relative flex flex-col "><img class="object-cover h-64 w-full rounded-2xl shadow " :src="categoria.capa" /></div>
                             <h1 class="my-4 font-bold text-gray-800 text-2xl">{{ categoria.titulo }}</h1>
+                            <p class="text-gray-400">{{ categoria.resumo }}</p>
                         </a>
 
                     </div>

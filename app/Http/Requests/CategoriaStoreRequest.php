@@ -34,6 +34,8 @@ class CategoriaStoreRequest extends FormRequest
         return [
             'titulo' => 'required|string',
             'capa' => 'required',
+            'resumo' => 'string',
+            'texto' => 'string',
             'ordem' => 'integer',
         ];
     }

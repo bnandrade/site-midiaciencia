@@ -19,6 +19,8 @@ class Categoria extends Model
     protected $fillable = [
         'capa',
         'titulo',
+        'resumo',
+        'texto',
         'slug',
         'ordem',
     ];

@@ -34,6 +34,8 @@ class CategoriaUpdateRequest extends FormRequest
         return [
             'titulo' => 'required|string',
             'capa' => '',
+            'resumo' => 'string',
+            'texto' => 'string',
             'ordem' => 'integer',
         ];
     }

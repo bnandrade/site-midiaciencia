@@ -22,6 +22,25 @@
                 <jet-input-error :message="form.errors.titulo" class="mt-2" />
             </div>
 
+            <div class="col-span-6 ">
+                <jet-label for="resumo" value="Resumo da categoria" />
+                <jet-input id="resumo" type="text" class="mt-1 block w-full" v-model="form.resumo"  />
+                <jet-input-error :message="form.errors.resumo" class="mt-2" />
+            </div>
+
+            <div class="col-span-9 mb-4 ">
+                <jet-label for="content" value="Texto da categoria" />
+                <quill-editor
+                    ref="texto"
+                    id="texto"
+                    :value="texto"
+                    :options="editorOption"
+                    v-model:value="form.texto"
+                />
+                <jet-input-error :message="form.errors.texto" class="mt-2" />
+            </div>
+
+
             <div class="col-span-3 ">
                 <jet-label for="ordem" value="Ordem de apresentação" />
                 <select v-model="form.ordem"  class="form-input rounded-md shadow-sm block mt-1 p-3 w-full border focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparent " >
@@ -74,6 +93,13 @@ import JetLabel from '@/Jetstream/Label'
 import JetActionMessage from '@/Jetstream/ActionMessage'
 import JetSecondaryButton from '@/Jetstream/SecondaryButton'
 import JetSectionBorder from '@/Jetstream/SectionBorder'
+import {quillEditor} from "vue-quill-editor";
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+
+import dedent from 'dedent'
+import debounce from 'lodash/debounce'
 
 export default {
     name: "New",
@@ -88,16 +114,44 @@ export default {
         JetActionMessage,
         JetSecondaryButton,
         JetSectionBorder,
+        quillEditor,
     },
     data() {
         return {
             form: this.$inertia.form({
                 capa: '',
                 titulo: '',
+                resumo: '',
+                texto: '',
                 ordem: ''
             }),
 
             imagePreview: '',
+
+            editorOption: {
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'header': 1 }, { 'header': 2 }],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'script': 'sub' }, { 'script': 'super' }],
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                        [{ 'direction': 'rtl' }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        [{ 'font': [] }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean'],
+                        ['link',  'video']
+                    ],
+                    syntax: {
+                        highlight: text => hljs.highlightAuto(text).value
+                    }
+                }
+            },
+            texto: dedent``,
 
 
         }
@@ -109,6 +163,7 @@ export default {
                 errorBag: 'categoriaStore',
                 preserveScroll: true,
                 onSuccess: () => {
+                    this.texto = ''
                     this.form.reset()
                 }
             });
@@ -121,8 +176,15 @@ export default {
             this.form.capa = files[0];
         },
 
+        onEditorChange: debounce(function(value) {
+            this.content = value.html
+        }, 466),
+
     },
     computed: {
+        editor() {
+            return this.$refs.content.quill
+        },
 
     },
 }

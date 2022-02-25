@@ -49,10 +49,28 @@
 
                 </div>
 
-                <div class="">
-                    <jet-label for="titulo" value="Título" />
+                <div class="mt-4">
+                    <jet-label for="titulo" value="Título da Categoria" />
                     <jet-input id="titulo" type="text" class="mt-1 block w-full" v-model="updateForm.titulo"  />
                     <jet-input-error :message="updateForm.errors.titulo" class="mt-2" />
+                </div>
+
+                <div class="mt-4">
+                    <jet-label for="resumo" value="Resumo da Categoria" />
+                    <jet-input id="resumo" type="text" class="mt-1 block w-full" v-model="updateForm.resumo"  />
+                    <jet-input-error :message="updateForm.errors.resumo" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 mt-4 mb-4 ">
+                    <jet-label for="content" value="Texto da Categoria" />
+                    <quill-editor
+                        ref="texto"
+                        id="texto"
+                        :value="texto"
+                        :options="editorOption"
+                        v-model:value="updateForm.texto"
+                    />
+                    <jet-input-error :message="updateForm.errors.texto" class="mt-2" />
                 </div>
 
                 <div class="col-span-3 ">
@@ -136,6 +154,12 @@ import JetInput from '@/Jetstream/Input'
 import JetInputError from '@/Jetstream/InputError'
 import JetLabel from '@/Jetstream/Label'
 import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+import {quillEditor} from "vue-quill-editor";
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+
+import dedent from 'dedent'
 
 export default {
     props: {
@@ -153,6 +177,7 @@ export default {
         JetLabel,
         JetSecondaryButton,
         JetSectionBorder,
+        quillEditor,
     },
 
     data() {
@@ -160,6 +185,8 @@ export default {
             updateForm: this.$inertia.form({
                 capa: '',
                 titulo: this.categoria.titulo,
+                resumo: this.categoria.resumo,
+                texto: this.categoria.texto,
                 ordem: this.categoria.ordem,
             }),
             capa: '',
@@ -171,6 +198,32 @@ export default {
             destroyForm: this.$inertia.form(),
             destroying: false,
 
+
+            editorOption: {
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'header': 1 }, { 'header': 2 }],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'script': 'sub' }, { 'script': 'super' }],
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                        [{ 'direction': 'rtl' }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        [{ 'font': [] }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean'],
+                        ['link',  'video']
+                    ],
+                    syntax: {
+                        highlight: text => hljs.highlightAuto(text).value
+                    }
+                }
+            },
+            texto: dedent``,
+
         }
     },
 
@@ -181,6 +234,8 @@ export default {
                 _method : 'PUT',
                 capa: this.capa,
                 titulo: this.updateForm.titulo,
+                resumo: this.updateForm.resumo,
+                texto: this.updateForm.texto,
                 ordem: this.updateForm.ordem,
             }
 
@@ -191,6 +246,8 @@ export default {
                     this.updateForm.reset()
                     this.updateForm.capa = ''
                     this.updateForm.titulo = ''
+                    this.updateForm.resumo = ''
+                    this.updateForm.texto = ''
                     this.updateForm.ordem = ''
                     this.formNewVisible = false
                     this.updating = false

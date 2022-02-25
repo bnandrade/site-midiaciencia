@@ -46,6 +46,8 @@ class ProdutoController extends Controller
                     'capa' => Storage::url($categoria->capa),
                     'slug' => $categoria->slug,
                     'titulo' => $categoria->titulo,
+                    'resumo' => $categoria->resumo,
+                    'texto' => $categoria->texto,
                     'ordem' => $categoria->ordem,
                 ]),
         ]);

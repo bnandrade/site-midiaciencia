@@ -12,9 +12,15 @@
                 </div>
             </div>
 
-            <div class="mt-4 ">
+            <div class="mt-4 mx-4">
                 <p class="text-2xl font-bold">{{$page.props.categoria[0].titulo}}</p>
+                <p class="mt-2 text-lg">{{$page.props.categoria[0].resumo}}</p>
             </div>
+
+            <div class="mt-4 mx-4" >
+                <p v-html="$page.props.categoria[0].texto" class="my-2"></p>
+            </div>
+
 
             <div class="mt-8">
                 <div class="p-4 flex flex-col sm:grid sm:grid-cols-3 sm:gap-8">

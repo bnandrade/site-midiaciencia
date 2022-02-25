@@ -32,6 +32,8 @@ class CategoriaController extends Controller
                     'capa' => Storage::url($categoria->capa),
                     'slug' => $categoria->slug,
                     'titulo' => $categoria->titulo,
+                    'resumo' => $categoria->resumo,
+                    'texto' => $categoria->texto,
                     'ordem' => $categoria->ordem,
                     'produtos' => $categoria->produtos
                 ]),
@@ -75,6 +77,8 @@ class CategoriaController extends Controller
         }
 
         $categoriaUp['titulo'] = $data['titulo'];
+        $categoriaUp['resumo'] = $data['resumo'];
+        $categoriaUp['texto'] = $data['texto'];
         $categoriaUp['ordem'] = $data['ordem'];
 
 
