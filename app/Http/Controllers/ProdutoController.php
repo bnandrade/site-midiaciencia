@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProdutoImageStoreRequest;
 use App\Http\Requests\ProdutoStoreRequest;
 use App\Http\Requests\ProdutoUpdateRequest;
+use App\Models\Categoria;
 use App\Models\Foto;
 use App\Models\Produto;
 use Illuminate\Http\Request;
@@ -37,6 +38,15 @@ class ProdutoController extends Controller
                     'texto' => $produto->texto,
                     'ordem' => $produto->ordem,
                     'fotos' => $produto->fotos,
+                    'categoria' => $produto->categoria
+                ]),
+            'categorias' => Categoria::paginate(20)
+                ->through(fn ($categoria) => [
+                    'id' => $categoria->id,
+                    'capa' => Storage::url($categoria->capa),
+                    'slug' => $categoria->slug,
+                    'titulo' => $categoria->titulo,
+                    'ordem' => $categoria->ordem,
                 ]),
         ]);
     }
@@ -99,6 +109,7 @@ class ProdutoController extends Controller
             $produtoUp['capa'] = $request->capa->store('public/produtos');
         }
 
+        $produtoUp['categoria_id'] = $data['categoria_id'];
         $produtoUp['titulo'] = $data['titulo'];
         $produtoUp['resumo'] = $data['resumo'];
         $produtoUp['texto'] = $data['texto'];
@@ -133,6 +144,7 @@ class ProdutoController extends Controller
 
         return Redirect::route('produtos');
     }
+
     public function destroyImage(Request $request, Foto $produtoImage)
     {
         $produtoImageDestroy = $produtoImage->delete();

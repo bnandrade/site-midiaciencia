@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NumeroController;
@@ -35,7 +36,9 @@ use Inertia\Inertia;
 });*/
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/detalhes/{produto}', [HomeController::class, 'detalhes'])->name('detalhes.produto');
+Route::get('/detalhes/{categoria}', [HomeController::class, 'detalhes'])->name('detalhes.categoria');
+Route::get('/detalhes-produto/{produto}', [HomeController::class, 'detalhes_produto'])->name('detalhes.produto');
+Route::get('/carrega-imagem/{slug}', [HomeController::class, 'carrega_imagem'])->name('carrega.imagem');
 
 /* ROTAS ADMINISTRATIVAS */
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -59,6 +62,11 @@ Route::get('/detalhes/{produto}', [HomeController::class, 'detalhes'])->name('de
         Route::post('banners', [BannerController::class, 'store'])->name('banner.store');
         Route::put('banners/{banner}', [BannerController::class, 'update'])->name('banner.update');
         Route::delete('banners/{banner}', [BannerController::class, 'destroy'])->name('banner.destroy');
+
+        Route::get('categorias', [CategoriaController::class, 'index'])->name('categorias');
+        Route::post('categorias', [CategoriaController::class, 'store'])->name('categoria.store');
+        Route::put('categorias/{categoria}', [CategoriaController::class, 'update'])->name('categoria.update');
+        Route::delete('categorias/{categoria}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
 
         Route::get('produtos', [ProdutoController::class, 'index'])->name('produtos');
         Route::post('produtos', [ProdutoController::class, 'store'])->name('produto.store');

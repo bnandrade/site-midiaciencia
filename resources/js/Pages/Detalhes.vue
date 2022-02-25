@@ -8,24 +8,27 @@
 
             <div class="flex flex-col md:flex-row">
                 <div class="p-4 w-full">
-                    <img class="w-full" :src="$page.props.produto[0].capa" />
+                    <img class="w-full" :src="$page.props.categoria[0].capa" />
                 </div>
             </div>
 
             <div class="mt-4 ">
-                <p class="text-2xl font-bold">{{$page.props.produto[0].titulo}}</p>
-                <p class="mt-2 text-lg">{{$page.props.produto[0].resumo}}</p>
+                <p class="text-2xl font-bold">{{$page.props.categoria[0].titulo}}</p>
             </div>
 
-            <div class="mt-4 " >
-                <p v-html="$page.props.produto[0].texto" class="my-2"></p>
-            </div>
-            <div class="mt-4 border-b mb-6" >
-                <div v-if="$page.props.produto[0].fotos" class="w-full mt-4 flex flex-wrap">
-                    <div v-for="(foto, index) in $page.props.produto[0].fotos" class=" p-2 rounded mr-1 w-64" :key="foto.id" >
-                        <img  :src="foto.imagem" />
+            <div class="mt-8">
+                <div class="p-4 flex flex-col sm:grid sm:grid-cols-3 sm:gap-8">
+                    <!-- GRID PRODUTO -->
+                    <div v-for="(produto, index) in $page.props.categoria[0].produtos" :key="produto.id" class="my-4 sm:my-0 p-2 flex flex-col cursor-pointer">
+                        <a :href="route('detalhes.produto', produto.slug)" class="cursor-pointer">
+                            <!-- <img :src="produto.url_foto">-->
+                            <div class="my-4 relative flex flex-col "><img class="object-cover h-64 w-full rounded-2xl shadow " :src="carregaImagem(produto.capa)" /></div>
+                            <h1 class="my-4 font-bold text-gray-800 text-2xl">{{ produto.titulo }}</h1>
+                            <p class="text-gray-400">{{ produto.resumo }}</p>
+                        </a>
 
                     </div>
+                    <!-- GRID produto -->
                 </div>
             </div>
 
@@ -47,7 +50,9 @@ import mapValues from "lodash/mapValues";
 export default {
     name: "Detalhes",
     props: {
+        categoria: Array,
         produto: Array,
+
     },
     components: {
         Navbar,
@@ -56,8 +61,15 @@ export default {
     },
     data(){
         return {
+            capa: '',
         }
     },
+    methods: {
+        carregaImagem(slug){
+            var url = slug.split('public/');
+            return '../storage/'+url[1];
+        },
+    }
 
 }
 </script>

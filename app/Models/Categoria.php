@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Produto extends Model
+class Categoria extends Model
 {
     use HasFactory;
 
-    protected $table = 'produtos';
+    protected $table = 'categorias';
 
     /**
      * The attributes that are mass assignable.
@@ -18,12 +18,9 @@ class Produto extends Model
      */
     protected $fillable = [
         'capa',
-        'resumo',
         'titulo',
         'slug',
-        'texto',
         'ordem',
-        'categoria_id',
     ];
 
     public function scopeOrderByName($query)
@@ -41,13 +38,9 @@ class Produto extends Model
         });
     }
 
-    public function categoria()
+    public function produtos()
     {
-        return $this->belongsTo(Categoria::class);
+        return $this->hasMany(Produto::class,'categoria_id');
     }
 
-    public function fotos()
-    {
-        return $this->hasMany(Foto::class,'produto_id');
-    }
 }

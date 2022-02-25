@@ -29,6 +29,11 @@
                     <span class="mx-2 font-medium">Banner</span>
                 </sidebar-nav-link>
 
+                <sidebar-nav-link :href="route('categorias')" :active="route().current('categorias')">
+                    <font-awesome-icon :icon="[ 'far', 'list-alt' ]" />
+                    <span class="mx-2 font-medium">Categorias</span>
+                </sidebar-nav-link>
+
                 <sidebar-nav-link :href="route('produtos')" :active="route().current('produtos')">
                     <font-awesome-icon :icon="[ 'far', 'list-alt' ]" />
                     <span class="mx-2 font-medium">Produtos</span>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\Categoria;
 use App\Models\Numero;
 use App\Models\Produto;
 use Illuminate\Http\Request;
@@ -35,6 +36,17 @@ class HomeController extends Controller
             'bannerTitulo' => $bannerTitulo,
             'bannerSubtitulo' => $bannerSubtitulo,
             'bannerUrl' => $bannerUrl,
+            'categorias' => Categoria::orderBy('ordem', 'asc')->get()->map(function ($categoria) {
+                return [
+                    'id' => $categoria->id,
+                    'capa' => Storage::url($categoria->capa),
+                    'titulo' => $categoria->titulo,
+                    'slug' => $categoria->slug,
+                    'ordem' => $categoria->ordem,
+                    'produtos' => $categoria->produtos,
+                ];
+
+            }),
             'produtos' => Produto::orderBy('ordem', 'asc')->get()->map(function ($produto) {
                 return [
                     'id' => $produto->id,
@@ -55,6 +67,17 @@ class HomeController extends Controller
     {
 
         return Inertia::render('Detalhes', [
+            'categoria' => Categoria::where('slug', $slug)->get()->map(function ($categoria) {
+                return [
+                    'id' => $categoria->id,
+                    'capa' => Storage::url($categoria->capa),
+                    'titulo' => $categoria->titulo,
+                    'slug' => $categoria->slug,
+                    'ordem' => $categoria->ordem,
+                    'produtos' => $categoria->produtos,
+                ];
+
+            }),
             'produto' => Produto::where('slug', $slug)->get()->map(function ($produto) {
                 return [
                     'id' => $produto->id,
@@ -71,5 +94,29 @@ class HomeController extends Controller
 
         ]);
     }
+
+    public function detalhes_produto($slug)
+    {
+
+        return Inertia::render('DetalhesProduto', [
+
+            'produto' => Produto::where('slug', $slug)->get()->map(function ($produto) {
+                return [
+                    'id' => $produto->id,
+                    'categoria' => $produto->categoria,
+                    'capa' => Storage::url($produto->capa),
+                    'titulo' => $produto->titulo,
+                    'slug' => $produto->slug,
+                    'resumo' => $produto->resumo,
+                    'texto' => $produto->texto,
+                    'ordem' => $produto->ordem,
+                    'fotos' => $produto->fotos,
+                ];
+
+            }),
+
+        ]);
+    }
+
 
 }

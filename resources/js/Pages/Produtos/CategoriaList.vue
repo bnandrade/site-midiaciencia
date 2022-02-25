@@ -3,24 +3,19 @@
 
         <template #content>
             <div class="flex justify-between mb-4">
-                <h1 class="my-2 font-semibold">Produtos</h1>
+                <h1 class="my-2 font-semibold">Categorias</h1>
 
                 <search-filter v-model="form.search" class="w-2/5 max-w-md" @reset="reset">
 
                 </search-filter>
             </div>
 
-            <div class="space-y-6" v-if="produtos.data.length > 0">
+            <div class="space-y-6" v-if="categorias.data.length > 0">
                 <div class="flex" >
                     <div class="w-full flex flex-col items-start ">
                         <table class="table-fixed text-left w-full">
                             <thead>
                             <tr>
-                                <th class="w-2/6 border border-light-blue-500 px-4 py-2 text-light-blue-600">
-                                    <div class="flex justify-between">
-                                        Categoria
-                                    </div>
-                                </th>
                                 <th class="w-2/6 border border-light-blue-500 px-4 py-2 text-light-blue-600">
                                     <div class="flex justify-between">
                                         Capa
@@ -49,13 +44,11 @@
                             </thead>
                             <tbody>
 
-                            <tr v-for="(produto, index) in produtos.data" class="hover:bg-gray-100" :key="produto.id" >
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium" v-if="produto.categoria">{{ produto.categoria.titulo }}</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium italic" v-else>default</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium"><img class="w-24" :src="produto.capa" /></td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ produto.titulo }}</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ produto.ordem }}</td>
-                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium text-center"><item :categorias="categorias" :produto="produto"></item></td>
+                            <tr v-for="(categoria, index) in categorias.data" class="hover:bg-gray-100" :key="categoria.id" >
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium"><img class="w-24" :src="categoria.capa" /></td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ categoria.titulo }}</td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium">{{ categoria.ordem }}</td>
+                                <td class=" border border-light-blue-500 px-4 py-2 text-light-blue-600 font-medium text-center"><categoria-item :categoria="categoria"></categoria-item></td>
                             </tr>
                             </tbody>
                         </table>
@@ -64,7 +57,7 @@
                 </div>
 
                 <div class="flex justify-center">
-                    <pagination :links="produtos.links"></pagination>
+                    <pagination :links="categorias.links"></pagination>
                 </div>
             </div>
         </template>
@@ -80,22 +73,20 @@ import Pagination from '@/Components/Pagination'
 import SearchFilter from '@/Components/SearchFilter'
 import mapValues from 'lodash/mapValues'
 import pickBy from 'lodash/pickBy'
-import throttle from 'lodash/throttle'
 import JetInput from '@/Jetstream/Input'
-import Item from "./Item"
+import CategoriaItem from "./CategoriaItem"
 
 export default {
     components: {
+        CategoriaItem,
         JetActionSection,
         JetSectionBorder,
         Pagination,
         SearchFilter,
         JetInput,
-        Item,
     },
     props: {
         'categorias': Object,
-        'produtos': Object,
         'filters': Object
     },
     data() {
@@ -110,7 +101,7 @@ export default {
         form: {
             handler: _.debounce(function() {
                 let query = pickBy(this.form);
-                let route = this.route('produtos', Object.keys(query).length ? query : { remember: 'forget' });
+                let route = this.route('categorias', Object.keys(query).length ? query : { remember: 'forget' });
                 this.$inertia.get(route, {}, { preserveScroll: true, preserveState: true })
             }, 150),
             deep: true,

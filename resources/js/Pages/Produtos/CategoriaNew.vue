@@ -5,18 +5,10 @@
         <template #form>
 
 
-            <div class="col-span-3 ">
-                <jet-label for="categoria_id" value="Categoria pertencente" />
-                <select v-model="form.categoria_id"  class="form-input rounded-md shadow-sm block mt-1 p-3 w-full border focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparent " >
-                    <option :value="categoria.id" v-for="(categoria, index) in categorias.data" :key="categoria.id">{{ categoria.titulo }}</option>
-                </select>
-                <jet-input-error :message="form.errors.categoria_id" class="mt-2" />
-            </div>
-
-
             <div class="col-span-12">
-                <label class="block font-medium text-sm text-gray-700">Imagem de capa do produto:</label>
+                <label class="block font-medium text-sm text-gray-700">Imagem de capa da categoria:</label>
                 <input type="file" class="form-input rounded-md shadow-sm block mt-1 p-2 w-full border focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparent " @change="onImageChange" >
+                <jet-input-error :message="form.errors.capa" class="mt-2" />
 
                 <div v-if="imagePreview" class="w-1/2 mx-auto">
                     <img :src="imagePreview" class="w-full" />
@@ -25,27 +17,9 @@
             </div>
 
             <div class="col-span-6 ">
-                <jet-label for="titulo" value="Titulo do produto" />
+                <jet-label for="titulo" value="Titulo da categoria" />
                 <jet-input id="titulo" type="text" class="mt-1 block w-full" v-model="form.titulo" autofocus  />
                 <jet-input-error :message="form.errors.titulo" class="mt-2" />
-            </div>
-
-            <div class="col-span-6 ">
-                <jet-label for="resumo" value="Resumo" />
-                <jet-input id="resumo" type="text" class="mt-1 block w-full" v-model="form.resumo"  />
-                <jet-input-error :message="form.errors.resumo" class="mt-2" />
-            </div>
-
-            <div class="col-span-9 mb-4 ">
-                <jet-label for="content" value="Texto" />
-                <quill-editor
-                    ref="texto"
-                    id="texto"
-                    :value="texto"
-                    :options="editorOption"
-                    v-model:value="form.texto"
-                />
-                <jet-input-error :message="form.errors.texto" class="mt-2" />
             </div>
 
             <div class="col-span-3 ">
@@ -81,7 +55,7 @@
 
         <template #actions>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-                Produto criado
+                Categoria criada
             </jet-action-message>
             <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Criar
@@ -101,18 +75,9 @@ import JetActionMessage from '@/Jetstream/ActionMessage'
 import JetSecondaryButton from '@/Jetstream/SecondaryButton'
 import JetSectionBorder from '@/Jetstream/SectionBorder'
 
-import { quillEditor } from 'vue-quill-editor'
-
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-
-import dedent from 'dedent'
-import debounce from 'lodash/debounce'
-
 export default {
     name: "New",
     props: {
-        'categorias': Object,
     },
     components: {
         JetButton,
@@ -123,56 +88,27 @@ export default {
         JetActionMessage,
         JetSecondaryButton,
         JetSectionBorder,
-        quillEditor,
     },
     data() {
         return {
             form: this.$inertia.form({
-                categoria_id: '',
                 capa: '',
                 titulo: '',
-                resumo: '',
-                texto: '',
                 ordem: ''
             }),
 
             imagePreview: '',
 
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{ 'header': 1 }, { 'header': 2 }],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'script': 'sub' }, { 'script': 'super' }],
-                        [{ 'indent': '-1' }, { 'indent': '+1' }],
-                        [{ 'direction': 'rtl' }],
-                        [{ 'size': ['small', false, 'large', 'huge'] }],
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        [{ 'font': [] }],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'align': [] }],
-                        ['clean'],
-                        ['link',  'video']
-                    ],
-                    syntax: {
-                        highlight: text => hljs.highlightAuto(text).value
-                    }
-                }
-            },
-            texto: dedent``,
 
         }
     },
 
     methods: {
         store() {
-            this.form.post(route('produto.store'), {
-                errorBag: 'produtoStore',
+            this.form.post(route('categoria.store'), {
+                errorBag: 'categoriaStore',
                 preserveScroll: true,
                 onSuccess: () => {
-                    this.texto = ''
                     this.form.reset()
                 }
             });
@@ -185,15 +121,8 @@ export default {
             this.form.capa = files[0];
         },
 
-
-        onEditorChange: debounce(function(value) {
-            this.content = value.html
-        }, 466),
     },
     computed: {
-        editor() {
-            return this.$refs.content.quill
-        },
 
     },
 }

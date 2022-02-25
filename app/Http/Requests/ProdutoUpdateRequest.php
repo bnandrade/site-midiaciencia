@@ -31,6 +31,7 @@ class ProdutoUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'categoria_id' => 'required',
             'titulo' => 'required|string',
             'capa' => '',
             'resumo' => 'string',

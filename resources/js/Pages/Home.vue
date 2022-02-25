@@ -20,19 +20,19 @@
 
             <div class="mt-8">
                 <div class="p-4 flex flex-col sm:grid sm:grid-cols-3 sm:gap-8">
-                    <!-- GRID PRODUTO -->
-                    <div v-for="(produto, index) in produtos" :key="produto.id" class="my-4 sm:my-0 p-2 flex flex-col cursor-pointer">
-                        <a :href="route('detalhes.produto', produto.slug)" class="cursor-pointer">
+                    <!-- GRID CATEGORIA -->
+                    <div v-for="(categoria, index) in categorias" :key="categoria.id" class="my-4 sm:my-0 p-2 flex flex-col cursor-pointer">
+                        <a :href="route('detalhes.categoria', categoria.slug)" class="cursor-pointer">
                             <!-- <img :src="produto.url_foto">-->
-                            <div class="my-4 relative flex flex-col "><img class="object-cover h-64 w-full rounded-2xl shadow " :src="produto.capa" /></div>
-                            <h1 class="my-4 font-bold text-gray-800 text-2xl">{{ produto.titulo }}</h1>
-                            <p class="text-gray-400">{{ produto.resumo }}</p>
+                            <div class="my-4 relative flex flex-col "><img class="object-cover h-64 w-full rounded-2xl shadow " :src="categoria.capa" /></div>
+                            <h1 class="my-4 font-bold text-gray-800 text-2xl">{{ categoria.titulo }}</h1>
                         </a>
 
                     </div>
-                    <!-- GRID produto -->
+                    <!-- GRID CATEGORIA -->
                 </div>
             </div>
+
 
         </div>
 
@@ -56,6 +56,7 @@ export default {
         bannerSubtitulo: String,
         bannerUrl: String,
         produtos: Array,
+        categorias: Array,
         filters: Object
     },
     components: {
