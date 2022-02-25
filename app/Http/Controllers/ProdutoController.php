@@ -29,7 +29,7 @@ class ProdutoController extends Controller
 
         return Inertia::render('Produtos/Index', [
             'filters' => $request->all('search', 'order'),
-            'produtos' => Produto::paginate(20)
+            'produtos' => Produto::paginate(100)
                 ->through(fn ($produto) => [
                     'id' => $produto->id,
                     'capa' => Storage::url($produto->capa),
